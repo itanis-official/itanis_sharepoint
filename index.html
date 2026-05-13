@@ -842,45 +842,8 @@ html, body {
   .forecast {
     grid-template-columns: repeat(3, 1fr);
   }
-/*Footer*/
-  .header2 {
-            height: 150px;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
-            padding: 2.5rem 2rem;
-            text-align: center;
-            box-shadow: 0 4px 20px  rgba(8, 20, 47, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header2::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
 
-        .header2 h1 {
-            color: var(--white);
-            font-size: 2.25rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header2 p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1rem;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
+  
 }
 </style>
 </head>
@@ -950,12 +913,43 @@ html, body {
       </div>
     </div>
   </div>
-  <header class="header2">
-        <div class="header2-content">
-            <img src="logo.png" alt="Logo ITANIS" class="logo">
-            <p>Powered by ITANIS © 2026</p>
+<footer style="
+    background: linear-gradient(135deg, #7da4ab 0%, #197283 100%);
+    padding: 20px 10px;
+    text-align: center;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+">
+
+    <div style="
+        display:flex; 
+        flex-direction:column; 
+        align-items:center; 
+        justify-content:center;
+        gap:8px;
+        max-width:100%;
+    ">
+
+        <img src="Logo_ITANIS_FN-2500.png" 
+             alt="ITANIS Logo" 
+             style="
+                height:45px; 
+                max-width:80%; 
+                object-fit:contain;
+             ">
+
+        <div style="
+            font-size:13px; 
+            font-weight:400; 
+            opacity:0.9;
+            line-height:1.4;
+            padding: 0 5px;
+        ">
+            Powered by <strong>ITANIS</strong> © 2026
         </div>
-    </header>
+
+    </div>
 </div>
 
 <script>
