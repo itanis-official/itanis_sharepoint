@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>ITANIS · Plateforme unifiée</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --or: #ff8c00;
+  --orl: #ffaa33;
+  --ord: #d97400;
+  --og08: rgba(255, 140, 0, 0.08);
+  --og10: rgba(255, 140, 0, 0.10);
+  --og15: rgba(255, 140, 0, 0.15);
+  --og20: rgba(255, 140, 0, 0.20);
+  --og25: rgba(255, 140, 0, 0.25);
+  --og40: rgba(255, 140, 0, 0.40);
+  --bg: #ffffff;
+  --s1: #f8f7f5;
+  --s2: #f0ede8;
+  --text: #1a1a18;
+  --text2: #666660;
+  --text3: #aaaaaa;
+  --bd: rgba(0, 0, 0, 0.07);
+  --f-inter: 'Inter', sans-serif;
+  --f-poppins: 'Poppins', sans-serif;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-inter);
+  -webkit-font-smoothing: antialiased;
+  width: 100%;
+}
+
+/* ========== LAYOUT PRINCIPAL ========== */
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 1.2rem 2rem;
+}
+
+/* météo + hub en ligne */
+.row-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+
+.meteo-col {
+  flex: 1.2;
+  min-width: 260px;
+}
+
+.hub-col {
+  flex: 2;
+  min-width: 280px;
+}
+
+/* ========== CARTE MÉTÉO (100% gardée) ========== */
+.main-card {
+  background: linear-gradient(135deg, #ff8c00 0%, #e55c00 100%);
+  border-radius: 24px;
+  padding: 1.4rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.main-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.main-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+
+.city-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.city-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.city-time {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.temp-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.temp-big {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.temp-icon {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.temp-feel {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
+}
+
+.condition {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.details-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.detail-item {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  padding: 8px 10px;
+  backdrop-filter: blur(4px);
+}
+
+.det-label {
+  font-size: 0.60rem;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.det-val {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sec {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--or);
+  margin: 1rem 0 0.8rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sec::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--og20), transparent);
+}
+
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 0.2rem;
+}
+
+.fc-item {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.fc-item:hover {
+  border-color: var(--or);
+  background: var(--og10);
+  transform: translateY(-2px);
+}
+
+.fc-day {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.fc-icon {
+  font-size: 1.4rem;
+}
+
+.fc-hi {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fc-lo {
+  font-size: 0.68rem;
+  color: var(--text3);
+}
+
+/* ========== HUB APPLICATIONS (STYLE CONSERVÉ) ========== */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.sec-line {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--or), transparent);
+  flex-shrink: 0;
+}
+
+.sec-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--or);
+}
+
+.sec-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255, 140, 0, 0.25), transparent);
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 0.8rem;
+}
+
+.app-card {
+  background: var(--bg);
+  border: 1.5px solid var(--bd);
+  border-radius: 20px;
+  padding: 1.6rem 0.8rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.32s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.32s, border-color 0.32s;
+  cursor: pointer;
+}
+
+.app-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--og40);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.1);
+}
+
+.icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box {
+  width: 68px;
+  height: 68px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+  background: #fff;
+}
+
+.icon-box.odoo {
+  border: 1.5px solid rgba(113, 75, 103, 0.15);
+}
+
+.icon-box.erp {
+  border: 1.5px solid rgba(0, 120, 212, 0.15);
+}
+
+.icon-box.web {
+  border: 1.5px solid rgba(255, 107, 53, 0.15);
+}
+
+.app-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text2);
+  transition: color 0.25s;
+}
+
+.app-card:hover .app-name {
+  color: var(--or);
+}
+
+.open-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--og08);
+  border: 1px solid var(--og20);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.60rem;
+  font-weight: 600;
+  color: var(--ord);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.28s, transform 0.28s;
+}
+
+.open-pill svg {
+  width: 8px;
+  height: 8px;
+  stroke: var(--or);
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.app-card:hover .open-pill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 0.2rem;
+}
+
+.doc-card {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 0.9rem 0.9rem 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.26s, box-shadow 0.26s, border-color 0.26s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.doc-card:hover {
+  transform: translateX(5px);
+  border-color: var(--og25);
+  background: #fefefe;
+}
+
+.doc-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.doc-body {
+  flex: 1;
+}
+
+.doc-name {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.doc-sub {
+  font-size: 0.62rem;
+  color: var(--text3);
+}
+
+.doc-arr {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: 0.2s;
+}
+
+.doc-card:hover .doc-arr {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ========== CALENDRIER COMPLET (2 COLONNES) ========== */
+.calendar-section {
+  margin-top: 2rem;
+  border-top: 2px solid var(--og10);
+  padding-top: 1rem;
+}
+
+.cal-wrap {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+  background: var(--bg);
+  border-radius: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+}
+
+.cal-left {
+  padding: 0.4rem 0 0.8rem 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tb-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tb-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--or);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.tb-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.tb-sub {
+  font-size: 0.62rem;
+  color: var(--text3);
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.month-lbl {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--or);
+  min-width: 120px;
+  text-align: center;
+}
+
+.nbtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 30px;
+  border: 1px solid var(--bd);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nbtn:hover {
+  border-color: var(--or);
+  background: var(--og08);
+}
+
+.today-btn {
+  background: var(--og08);
+  border: 1px solid var(--og25);
+  border-radius: 30px;
+  padding: 5px 14px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--or);
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.sp {
+  flex: 1;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.sp.accent {
+  background: var(--or);
+  color: white;
+}
+
+.sp-val {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sp-lbl {
+  font-size: 0.58rem;
+  letter-spacing: 0.03em;
+}
+
+.dlbls {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+
+.dlbl {
+  text-align: center;
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.dlbl.we {
+  color: var(--or);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.dc {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid transparent;
+  padding: 6px 2px;
+  min-height: 48px;
+  transition: all 0.1s ease;
+}
+
+.dc:hover:not(.other) {
+  background: var(--og08);
+  transform: scale(1.03);
+}
+
+.dc.other {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+.dc.today {
+  background: var(--or);
+  box-shadow: 0 3px 10px var(--og25);
+}
+
+.dc.today .dn {
+  color: white;
+  font-weight: 700;
+}
+
+.dc.selected:not(.today) {
+  border-color: var(--or);
+  background: var(--og08);
+}
+
+.dn {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.dots {
+  display: flex;
+  gap: 2px;
+  margin-top: 3px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 10px;
+}
+
+.dot.high {
+  background: #e53030;
+}
+
+.dot.medium {
+  background: var(--or);
+}
+
+.dot.low {
+  background: #0f7a3a;
+}
+
+.nc-badge {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 0.48rem;
+  font-weight: 700;
+  background: var(--or);
+  color: white;
+  border-radius: 20px;
+  padding: 1px 4px;
+  min-width: 14px;
+  text-align: center;
+}
+
+/* panel droite calendrier */
+.cal-right {
+  background: var(--bg);
+  border-left: 1px solid var(--bd);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.panel-head {
+  background: linear-gradient(135deg, var(--or), var(--ord));
+  padding: 1rem 1.2rem;
+}
+
+.ph-date {
+  font-weight: 700;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.ph-count {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.add-form {
+  padding: 1rem;
+  border-bottom: 1px solid var(--bd);
+}
+
+.note-input {
+  width: 100%;
+  border: 1.5px solid var(--bd);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-family: var(--f-inter);
+  font-size: 0.8rem;
+  background: var(--s1);
+  resize: none;
+  outline: none;
+}
+
+.note-input:focus {
+  border-color: var(--or);
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.prio-sel {
+  flex: 1;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 8px;
+  background: var(--s1);
+}
+
+.add-btn {
+  background: var(--or);
+  border: none;
+  border-radius: 30px;
+  padding: 0 18px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.note-list {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.note-item {
+  background: var(--s1);
+  border-left: 3px solid var(--nc, var(--or));
+  border-radius: 12px;
+  padding: 0.7rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  gap: 8px;
+}
+
+.p-high {
+  --nc: #e53030;
+}
+
+.p-medium {
+  --nc: #ff8c00;
+}
+
+.p-low {
+  --nc: #0f7a3a;
+}
+
+.ntext {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.nmeta {
+  display: flex;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.ptag {
+  font-size: 0.55rem;
+  font-weight: 600;
+  background: var(--og10);
+  padding: 2px 8px;
+  border-radius: 40px;
+}
+
+.del-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+}
+
+@media (max-width: 780px) {
+  .row-cards {
+    flex-direction: column;
+  }
+  .cal-wrap {
+    grid-template-columns: 1fr;
+  }
+  .cal-right {
+    border-left: none;
+    border-top: 1px solid var(--bd);
+  }
+  .apps-grid,
+  .docs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard {
+    padding: 0.8rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- ROW météo + hub apps -->
+  <div class="row-cards">
+    <div class="meteo-col">
+      <div id="weatherContent"></div>
+    </div>
+    <div class="hub-col">
+      <div class="sec-head">
+        <div class="sec-line"></div>
+        <span class="sec-label">Applications</span>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="apps-grid">
+        <a href="https://odoo.itanis.tn/web/login" target="_blank" class="app-card">
+          <div class="icon-wrap"><div class="icon-box odoo"><svg width="46" height="28" viewBox="0 0 200 60"><circle cx="30" cy="30" r="18" fill="none" stroke="#714B67" stroke-width="6"/><circle cx="30" cy="30" r="7" fill="#714B67"/><text x="56" y="38" font-family="Arial" font-weight="bold" font-size="32" fill="#714B67">odoo</text></svg></div></div>
+          <div class="app-name">ODOO</div>
+          <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+        </a>
+        <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Socit/Forms/AllItems.aspx" target="_blank" class="app-card">
+          <div class="icon-wrap"><div class="icon-box erp"><svg width="48" viewBox="0 0 96 96"><circle cx="38" cy="56" r="22" fill="#2684D6"/><circle cx="54" cy="40" r="22" fill="#0B53CE"/><text x="52" y="70" font-family="Segoe UI" font-weight="800" font-size="32" fill="white" text-anchor="middle">S</text></svg></div></div>
+          <div class="app-name">ERP</div>
+          <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+        </a>
+        <a href="https://www.itanis.tn/" target="_blank" class="app-card">
+          <div class="icon-wrap"><div class="icon-box web">🌐</div></div>
+          <div class="app-name">Site Web</div>
+          <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+        </a>
+      </div>
+      <div class="sec-head">
+        <div class="sec-line"></div>
+        <span class="sec-label">Espaces Documentaires</span>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="docs-grid" id="docsGrid">
+        <!-- généré JS pour éviter répétition, mais on injecte via innerHTML statique aussi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDRIER complet -->
+  <div class="calendar-section">
+    <div class="cal-wrap">
+      <div class="cal-left">
+        <div class="topbar">
+          <div class="tb-left"><div class="tb-icon">📅</div><div><div class="tb-title">Calendrier ITANIS</div><div class="tb-sub" id="todayStr"></div></div></div>
+          <div class="month-nav"><div class="nbtn" onclick="chMonth(-1)">◀</div><div class="month-lbl" id="monthLbl"></div><div class="nbtn" onclick="chMonth(1)">▶</div></div>
+          <button class="today-btn" onclick="goToday()">Aujourd'hui</button>
+        </div>
+        <div class="stats"><div class="sp accent"><div class="sp-val" id="stToday">0</div><div class="sp-lbl">Aujourd'hui</div></div><div class="sp"><div class="sp-val" id="stMonth">0</div><div class="sp-lbl">Ce mois</div></div><div class="sp"><div class="sp-val" id="stHigh">0</div><div class="sp-lbl">Haute priorité</div></div></div>
+        <div class="dlbls"><div class="dlbl">Lun</div><div class="dlbl">Mar</div><div class="dlbl">Mer</div><div class="dlbl">Jeu</div><div class="dlbl">Ven</div><div class="dlbl we">Sam</div><div class="dlbl we">Dim</div></div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="cal-right">
+        <div class="panel-head"><div class="ph-date" id="panelDate">Sélectionnez un jour</div><div class="ph-count" id="panelCount">Cliquez sur une date</div></div>
+        <div class="add-form"><textarea class="note-input" id="noteInput" placeholder="Tâche ou note (Ctrl+Enter)" rows="2"></textarea><div class="form-row"><select class="prio-sel" id="prioSel"><option value="high">🔴 Haute</option><option value="medium" selected>🟠 Moyenne</option><option value="low">🟢 Basse</option><option value="info">🔵 Info</option></select><button class="add-btn" onclick="addNote()">+ Ajouter</button></div></div>
+        <div class="note-list" id="noteList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- MÉTÉO ----------
+  const CITY = 'Tunis';
+  const API_KEY = 'bd5e378503939ddaee76f12ad7a97608';
+  const conditions = { 'Clear': { fr: 'Ciel dégagé', icon: '☀️' }, 'Clouds': { fr: 'Nuageux', icon: '⛅' }, 'Rain': { fr: 'Pluie', icon: '🌧️' }, 'Drizzle': { fr: 'Bruine', icon: '🌦️' }, 'Thunderstorm': { fr: 'Orage', icon: '⛈️' }, 'Snow': { fr: 'Neige', icon: '❄️' }, 'Mist': { fr: 'Brume', icon: '🌫️' }, 'Haze': { fr: 'Brume sèche', icon: '🌫️' }, 'Fog': { fr: 'Brouillard', icon: '🌫️' } };
+  const daysW = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+  const monthsY = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+
+  function getCondition(main) { return conditions[main] || { fr: main, icon: '🌤️' }; }
+
+  async function loadWeather() {
+    const el = document.getElementById('weatherContent');
+    try {
+      const [cur, fore] = await Promise.all([fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=fr`).then(r => r.json()), fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=metric&lang=fr`).then(r => r.json())]);
+      const cond = getCondition(cur.weather[0].main);
+      const nowD = new Date();
+      const dateStr = daysW[nowD.getDay()] + ' ' + nowD.getDate() + ' ' + monthsY[nowD.getMonth()];
+      const timeStr = nowD.getHours().toString().padStart(2, '0') + 'h' + nowD.getMinutes().toString().padStart(2, '0');
+      const dailyMap = {};
+      fore.list.forEach(item => { const d = new Date(item.dt * 1000); const key = d.toDateString(); if (!dailyMap[key]) dailyMap[key] = { temps: [], icons: [], day: d }; dailyMap[key].temps.push(item.main.temp); dailyMap[key].icons.push(item.weather[0].main); });
+      const dailyArr = Object.values(dailyMap).slice(0, 5);
+      el.innerHTML = `<div class="main-card"><div class="city-row"><span class="city-name">📍 ${cur.name}, ${cur.sys.country}</span><span class="city-time">${dateStr} · ${timeStr}</span></div><div class="temp-row"><div class="temp-big">${Math.round(cur.main.temp)}°</div><div><div class="temp-icon">${cond.icon}</div><div class="temp-feel">Ressenti ${Math.round(cur.main.feels_like)}°</div></div></div><div class="condition">${cond.fr}</div><div class="details-row"><div class="detail-item"><div class="det-label">Humidité</div><div class="det-val">${cur.main.humidity}%</div></div><div class="detail-item"><div class="det-label">Vent</div><div class="det-val">${Math.round(cur.wind.speed * 3.6)} km/h</div></div><div class="detail-item"><div class="det-label">Pression</div><div class="det-val">${cur.main.pressure} hPa</div></div></div></div><div class="sec">Prévisions 5 jours</div><div class="forecast">${dailyArr.map(d => { const hi = Math.round(Math.max(...d.temps)); const lo = Math.round(Math.min(...d.temps)); const ic = getCondition(d.icons[Math.floor(d.icons.length / 2)]).icon; const label = d.day.toDateString() === nowD.toDateString() ? "Auj." : daysW[d.day.getDay()]; return `<div class="fc-item"><div class="fc-day">${label}</div><div class="fc-icon">${ic}</div><div class="fc-hi">${hi}°</div><div class="fc-lo">${lo}°</div></div>`; }).join('')}</div>`;
+    } catch(e) { el.innerHTML = `<div class="error-msg" style="background: rgba(255,80,80,0.1); padding:1rem; border-radius:16px;">⚠️ Erreur météo</div>`; }
+  }
+  loadWeather(); setInterval(loadWeather, 10 * 60 * 1000);
+
+  // ---------------- ESPACES DOCS ----------------
+  const docs = [{ name: "Projets & Réalisations", sub: "Études de cas", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Projets&R%C3%A9alisations", icon: "🏗️" },{ name: "Technique", sub: "Plans, specs", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Technique_", icon: "🔧" },{ name: "Société", sub: "Chartes, procédures", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Soci%C3%A9t%C3%A9", icon: "🏢" },{ name: "Juridique", sub: "Contrats", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Document_Juridique", icon: "⚖️" },{ name: "Admin & Finance", sub: "Budgets", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Administration%20%26%20Finance#", icon: "💰" },{ name: "RH", sub: "Paie, congés", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Ressources_Humaines#", icon: "👥" }];
+  function buildDocs() { const grid = document.getElementById('docsGrid'); grid.innerHTML = docs.map(d => `<a href="${d.url}" target="_blank" class="doc-card"><div class="doc-icon">${d.icon}</div><div class="doc-body"><div class="doc-name">${d.name}</div><div class="doc-sub">${d.sub}</div></div><div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div></a>`).join(''); } buildDocs();
+
+  // ---------- CALENDRIER --------------
+  const STORAGE_KEY = 'itanis_cal_notes';
+  let curDate = new Date();
+  let selDateObj = null;
+  function getNotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; } }
+  function saveNotes(data) { localStorage.setItem
