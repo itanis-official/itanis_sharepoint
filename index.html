@@ -2,888 +2,1141 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Météo ITANIS</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>ITANIS · Plateforme unifiée</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --or: #ff8c00; --orl: #ffaa33; --ord: #d97400;
-  --og10: rgba(255,140,0,0.10); --og20: rgba(255,140,0,0.20);
-  --bg: #ffffff; --s1: #f8f7f5; --s2: #f0ede8;
-  --text: #1a1a18; --text2: #666660; --text3: #aaaaaa;
-  --bd: rgba(0,0,0,0.08); --f: 'Inter', sans-serif;
+/* ---------- RESET & VARIABLES GLOBALES ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-html, body { background: var(--bg); color: var(--text); font-family: var(--f); -webkit-font-smoothing: antialiased; }
 
-.wrap { padding: 1.2rem; }
+:root {
+  --or: #ff8c00;
+  --orl: #ffaa33;
+  --ord: #d97400;
+  --og08: rgba(255, 140, 0, 0.08);
+  --og10: rgba(255, 140, 0, 0.10);
+  --og15: rgba(255, 140, 0, 0.15);
+  --og20: rgba(255, 140, 0, 0.20);
+  --og25: rgba(255, 140, 0, 0.25);
+  --og40: rgba(255, 140, 0, 0.40);
+  --bg: #ffffff;
+  --s1: #f8f7f5;
+  --s2: #f0ede8;
+  --text: #1a1a18;
+  --text2: #666660;
+  --text3: #aaaaaa;
+  --bd: rgba(0, 0, 0, 0.07);
+  --f-inter: 'Inter', sans-serif;
+  --f-poppins: 'Poppins', sans-serif;
+}
 
-/* main card */
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-inter);
+  -webkit-font-smoothing: antialiased;
+  width: 100%;
+}
+
+/* ---------- LAYOUT PRINCIPAL - VERTICAL ---------- */
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2rem;
+}
+
+/* chaque section occupe toute la largeur */
+.section {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- MÉTÉO (carte principale) ---------- */
 .main-card {
   background: linear-gradient(135deg, #ff8c00 0%, #e55c00 100%);
-  border-radius: 14px; padding: 1.4rem 1.5rem;
-  position: relative; overflow: hidden; margin-bottom: 1rem;
+  border-radius: 24px;
+  padding: 1.4rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.02);
 }
+
 .main-card::before {
-  content: ''; position: absolute; top: -40px; right: -40px;
-  width: 160px; height: 160px; border-radius: 50%;
-  background: rgba(255,255,255,0.12); pointer-events: none;
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
 }
+
 .main-card::after {
-  content: ''; position: absolute; bottom: -30px; left: -20px;
-  width: 120px; height: 120px; border-radius: 50%;
-  background: rgba(255,255,255,0.07); pointer-events: none;
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
 }
 
-.city-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem; }
-.city-name { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.9); }
-.city-time { font-size: 0.72rem; color: rgba(255,255,255,0.7); }
+.city-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
 
-.temp-row { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 0.5rem; position: relative; z-index: 1; }
-.temp-big { font-size: 3.5rem; font-weight: 700; color: #fff; line-height: 1; }
-.temp-icon { font-size: 2.8rem; line-height: 1; }
-.temp-feel { font-size: 0.72rem; color: rgba(255,255,255,0.75); margin-bottom: 6px; }
+.city-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
 
-.condition { font-size: 0.88rem; font-weight: 600; color: #fff; margin-bottom: 1rem; }
+.city-time {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.temp-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.temp-big {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.temp-icon {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.temp-feel {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
+}
+
+.condition {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
 
 .details-row {
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
-  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  position: relative;
+  z-index: 1;
 }
+
 .detail-item {
-  background: rgba(255,255,255,0.15); border-radius: 9px; padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  padding: 8px 10px;
   backdrop-filter: blur(4px);
 }
-.det-label { font-size: 0.60rem; color: rgba(255,255,255,0.70); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 3px; }
-.det-val   { font-size: 0.88rem; font-weight: 600; color: #fff; }
 
-/* section title */
-.sec { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--or); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px; }
-.sec::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--og20), transparent); }
-
-/* forecast */
-.forecast { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 1rem; }
-.fc-item {
-  background: var(--s1); border: 1px solid var(--bd);
-  border-radius: 10px; padding: 10px 6px;
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  transition: border-color .2s, background .2s;
+.det-label {
+  font-size: 0.60rem;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 }
-.fc-item:hover { border-color: var(--or); background: var(--og10); }
-.fc-day  { font-size: 0.65rem; font-weight: 600; color: var(--text2); }
-.fc-icon { font-size: 1.4rem; }
-.fc-hi   { font-size: 0.78rem; font-weight: 700; color: var(--text); }
-.fc-lo   { font-size: 0.68rem; color: var(--text3); }
 
-/* hourly */
-.hourly { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
-.hourly::-webkit-scrollbar { height: 3px; }
-.hourly::-webkit-scrollbar-thumb { background: var(--og20); border-radius: 3px; }
-.hr-item {
-  background: var(--s1); border: 1px solid var(--bd);
-  border-radius: 10px; padding: 10px 10px;
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  flex-shrink: 0; min-width: 58px;
+.det-val {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
 }
-.hr-time { font-size: 0.62rem; color: var(--text3); font-weight: 500; }
-.hr-icon { font-size: 1.2rem; }
-.hr-temp { font-size: 0.78rem; font-weight: 700; color: var(--text); }
 
-/* loading */
-.loading { text-align: center; padding: 2rem; color: var(--text3); font-size: 0.85rem; }
-.error-msg { background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.2); border-radius: 9px; padding: 0.8rem 1rem; font-size: 0.78rem; color: #b02020; margin-bottom: 1rem; }
-/*Application */
-:root {
-  --wh:   #ffffff;
-  --s1:   #f9f8f6;
-  --or:   #ff8c00;
-  --orl:  #ffac33;
-  --ord:  #cc6e00;
-  --og08: rgba(255,140,0,0.08);
-  --og15: rgba(255,140,0,0.15);
-  --og20: rgba(255,140,0,0.20);
-  --og40: rgba(255,140,0,0.40);
-  --tx:   #1a1a18;
-  --tx2:  #555550;
-  --tx3:  #aaaaaa;
-  --bd:   rgba(0,0,0,0.07);
-  --f:    'Poppins', sans-serif;
+.sec {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--or);
+  margin: 1rem 0 0.8rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-html, body { font-family: var(--f); -webkit-font-smoothing: antialiased; width: 100%; color: var(--tx); }
 
-/* KEYFRAMES */
-@keyframes fadeUp    { from{opacity:0;transform:translateY(18px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
-@keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-@keyframes shimmer   { 0%{background-position:-200% center} 100%{background-position:200% center} }
-@keyframes pulseRing { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(1.35);opacity:0} }
-@keyframes drawLine  { from{transform:scaleX(0)} to{transform:scaleX(1)} }
-@keyframes iconBounce{ 0%,100%{transform:scale(1)} 40%{transform:scale(1.18) rotate(-4deg)} 70%{transform:scale(0.95) rotate(2deg)} }
-@keyframes glowPulse { 0%,100%{box-shadow:0 4px 14px var(--gs,rgba(113,75,103,0.25))} 50%{box-shadow:0 8px 28px var(--gs,rgba(113,75,103,0.50))} }
-@keyframes titleIn   { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
-
-/* LAYOUT */
-.page { padding: 1.6rem 1.8rem 2.4rem; display: flex; flex-direction: column; gap: 1.1rem; }
-
-/* SECTION TITLE */
-.sec-head {
-  display: flex; align-items: center; gap: 10px;
-  animation: titleIn .5s ease both;
-}
-.sec-line {
-  width: 3px; height: 20px; border-radius: 2px;
-  background: linear-gradient(180deg, var(--or), transparent); flex-shrink: 0;
-}
-.sec-label {
-  font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--or);
-}
-.sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,140,0,0.25), transparent); }
-
-/* DIVIDER */
-.divider {
+.sec::after {
+  content: '';
+  flex: 1;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255,140,0,0.20), transparent);
-  transform-origin: center;
-  animation: drawLine .8s cubic-bezier(.4,0,.2,1) .3s both;
-  margin: 0.3rem 0;
+  background: linear-gradient(to right, var(--og20), transparent);
 }
 
-/* APPS */
-.apps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 0.2rem;
+}
+
+.fc-item {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.fc-item:hover {
+  border-color: var(--or);
+  background: var(--og10);
+  transform: translateY(-2px);
+}
+
+.fc-day {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.fc-icon {
+  font-size: 1.4rem;
+}
+
+.fc-hi {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fc-lo {
+  font-size: 0.68rem;
+  color: var(--text3);
+}
+
+/* ---------- HUB APPLICATIONS ---------- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.sec-line {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--or), transparent);
+  flex-shrink: 0;
+}
+
+.sec-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--or);
+}
+
+.sec-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255, 140, 0, 0.25), transparent);
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 0.8rem;
+}
 
 .app-card {
-  background: var(--wh); border: 1.5px solid var(--bd); border-radius: 18px;
-  padding: 1.8rem 1rem 1.4rem;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  text-decoration: none; color: inherit; position: relative; overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  transition: transform .32s cubic-bezier(.34,1.4,.64,1), box-shadow .32s, border-color .32s;
-  animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both; cursor: pointer;
+  background: var(--bg);
+  border: 1.5px solid var(--bd);
+  border-radius: 20px;
+  padding: 1.6rem 0.8rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.32s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.32s, border-color 0.32s;
+  cursor: pointer;
 }
-.app-card:nth-child(1){animation-delay:.05s} .app-card:nth-child(2){animation-delay:.13s} .app-card:nth-child(3){animation-delay:.21s}
-.app-card::before {
-  content:''; position:absolute; inset:0; border-radius:inherit;
-  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
-  background-size: 200% 100%; opacity:0; transition: opacity .3s; pointer-events: none;
-}
-.app-card::after {
-  content:''; position:absolute; top:0; left:10%; right:10%; height:2px;
-  background: linear-gradient(to right, transparent, var(--or), transparent);
-  opacity:0; transition: opacity .3s; border-radius: 0 0 2px 2px;
-}
-.app-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(255,140,0,0.32); box-shadow: 0 18px 44px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,140,0,0.08); }
-.app-card:hover::before { opacity:1; animation: shimmer 1.2s linear; }
-.app-card:hover::after  { opacity:1; }
-.app-card:active { transform: translateY(-3px) scale(0.98); }
 
-.icon-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
-.icon-wrap::before {
-  content:''; position:absolute; inset:-6px; border-radius:22px;
-  border: 2px solid var(--or); opacity:0; transform:scale(1); transition: opacity .2s;
+.app-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--og40);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.1);
 }
-.app-card:hover .icon-wrap::before { animation: pulseRing .6s ease-out forwards; }
+
+.icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .icon-box {
-  width: 68px; height: 68px; border-radius: 17px;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform .32s cubic-bezier(.34,1.4,.64,1), box-shadow .32s;
-  flex-shrink: 0; position: relative; z-index: 1;
-  animation: float 3.5s ease-in-out infinite;
+  width: 68px;
+  height: 68px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+  background: #fff;
 }
-.icon-box.odoo { background:#fff; border:1.5px solid rgba(113,75,103,0.15); --gs:rgba(113,75,103,0.25); }
-.icon-box.erp  { background:#fff; border:1.5px solid rgba(0,120,212,0.15); --gs:rgba(11,83,148,0.30); }
-.icon-box.web  { background:#fff; border:1.5px solid rgba(255,107,53,0.15); --gs:rgba(255,107,53,0.25); }
-.app-card:nth-child(2) .icon-box { animation-delay: .5s; }
-.app-card:nth-child(3) .icon-box { animation-delay: 1s; }
-.app-card:hover .icon-box { transform: scale(1.10) rotate(-2deg); animation: glowPulse 1.4s ease-in-out infinite; }
 
-.app-name { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--tx2); transition: color .25s, letter-spacing .25s; }
-.app-card:hover .app-name { color: var(--or); letter-spacing: 0.12em; }
+.icon-box.odoo {
+  border: 1.5px solid rgba(113, 75, 103, 0.15);
+}
+
+.icon-box.erp {
+  border: 1.5px solid rgba(0, 120, 212, 0.15);
+}
+
+.icon-box.web {
+  border: 1.5px solid rgba(255, 107, 53, 0.15);
+}
+
+.app-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text2);
+  transition: color 0.25s;
+}
+
+.app-card:hover .app-name {
+  color: var(--or);
+}
 
 .open-pill {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--og08); border: 1px solid rgba(255,140,0,0.18);
-  border-radius: 20px; padding: 3px 12px;
-  font-size: 0.60rem; font-weight: 600; color: var(--ord);
-  opacity: 0; transform: translateY(6px); transition: opacity .28s, transform .28s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--og08);
+  border: 1px solid var(--og20);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.60rem;
+  font-weight: 600;
+  color: var(--ord);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.28s, transform 0.28s;
 }
-.open-pill svg { width:8px; height:8px; stroke:var(--or); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-.app-card:hover .open-pill { opacity:1; transform:translateY(0); }
 
-/* DOCS */
-.docs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.open-pill svg {
+  width: 8px;
+  height: 8px;
+  stroke: var(--or);
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.app-card:hover .open-pill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 0.2rem;
+}
 
 .doc-card {
-  background: var(--wh); border: 1px solid var(--bd); border-radius: 13px;
-  padding: 1rem 1rem 1rem 1.3rem;
-  display: flex; align-items: center; gap: 11px;
-  text-decoration: none; color: inherit; position: relative; overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  transition: transform .26s cubic-bezier(.34,1.4,.64,1), box-shadow .26s, border-color .26s, background .26s;
-  animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 0.9rem 0.9rem 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.26s, box-shadow 0.26s, border-color 0.26s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
-.doc-card:nth-child(1){animation-delay:.08s} .doc-card:nth-child(2){animation-delay:.13s}
-.doc-card:nth-child(3){animation-delay:.18s} .doc-card:nth-child(4){animation-delay:.23s}
-.doc-card:nth-child(5){animation-delay:.28s} .doc-card:nth-child(6){animation-delay:.33s}
-.doc-card:nth-child(7){animation-delay:.38s} .doc-card:nth-child(8){animation-delay:.43s}
-.doc-card:nth-child(9){animation-delay:.48s}
-.doc-card::before {
-  content:''; position:absolute; left:0; top:0; bottom:0; width:3.5px;
-  background: linear-gradient(180deg, var(--lc,var(--or)), transparent); transform-origin: top;
+
+.doc-card:hover {
+  transform: translateX(5px);
+  border-color: var(--og25);
+  background: #fefefe;
 }
-.doc-card::after {
-  content:''; position:absolute; width:0; height:0; border-radius:50%;
-  background: radial-gradient(circle, var(--og15) 0%, transparent 70%);
-  top:50%; left:50%; transform:translate(-50%,-50%);
-  transition: width .4s ease, height .4s ease, opacity .4s ease; opacity:0; pointer-events:none;
-}
-.doc-card:active::after { width:200px; height:200px; opacity:1; }
-.doc-card:hover { transform: translateX(5px); border-color: rgba(255,140,0,0.22); box-shadow: 0 6px 22px rgba(0,0,0,0.09); background: #fefefe; }
-.doc-card:hover .doc-icon { background: var(--og08); border-color: rgba(255,140,0,0.22); animation: iconBounce .5s ease; }
-.doc-card:active { transform: translateX(2px); }
+
 .doc-icon {
-  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--s1); border: 1px solid var(--bd); font-size: 18px;
-  transition: background .25s, border-color .25s;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
 }
-.doc-body { flex:1; min-width:0; }
-.doc-name { font-size: 0.76rem; font-weight: 600; color: var(--tx); line-height: 1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition: color .25s; }
-.doc-sub  { font-size: 0.62rem; color: var(--tx3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
-.doc-card:hover .doc-name { color: var(--or); }
+
+.doc-body {
+  flex: 1;
+}
+
+.doc-name {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.doc-sub {
+  font-size: 0.62rem;
+  color: var(--text3);
+}
+
 .doc-arr {
-  width: 22px; height: 22px; border-radius: 50%; flex-shrink:0;
-  border: 1px solid var(--bd); display: flex; align-items: center; justify-content: center;
-  opacity:0; transform: translateX(-6px) scale(0.8);
-  transition: opacity .22s, transform .22s cubic-bezier(.34,1.4,.64,1), border-color .22s, background .22s;
-}
-.doc-arr svg { width:8px; height:8px; stroke:var(--or); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-.doc-card:hover .doc-arr { opacity:1; transform:translateX(0) scale(1); border-color:var(--og40); background: var(--og08); }
-
-/* RESPONSIVE */
-@media (max-width:700px) {
-  .apps-grid { gap:10px; }
-  .docs-grid { grid-template-columns: repeat(2,1fr); }
-  .icon-box { width:60px; height:60px; border-radius:15px; }
-  .app-card { padding:1.5rem 0.8rem 1.2rem; border-radius:16px; }
-  .app-name { font-size:0.72rem; }
-  .page { padding:1.2rem 1rem 2rem; gap:1rem; }
-  .doc-name { font-size:0.72rem; }
-  .doc-sub  { font-size:0.60rem; }
-  .doc-icon { width:36px; height:36px; font-size:16px; }
-  .doc-card { padding:0.8rem 0.8rem 0.8rem 1rem; gap:8px; }
-}
-@media (max-width:380px) {
-  .icon-box { width:50px; height:50px; border-radius:13px; }
-  .app-card { padding:1.2rem 0.5rem 1rem; }
-  .app-name { font-size:0.65rem; letter-spacing:0.04em; }
-  .docs-grid { grid-template-columns:1fr; }
-}
-/*Calendrier*/
-:root {
-  --or:   #ff8c00;
-  --orl:  #ffaa33;
-  --ord:  #c96e00;
-  --og08: rgba(255,140,0,0.08);
-  --og15: rgba(255,140,0,0.15);
-  --og25: rgba(255,140,0,0.25);
-  --wh:   #ffffff;
-  --s1:   #f8f7f5;
-  --tx:   #1a1a18;
-  --tx2:  #666660;
-  --tx3:  #b0afa8;
-  --bd:   rgba(0,0,0,0.07);
-  --f:    'Inter', sans-serif;
-}
-html, body {
-  background: var(--bg); color: var(--tx);
-  font-family: var(--f); -webkit-font-smoothing: antialiased;
-  width: 100%; min-height: 100vh;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: 0.2s;
 }
 
-/* ══════════════════════════════
-   DESKTOP: 2-column layout
-══════════════════════════════ */
-.page {
+.doc-card:hover .doc-arr {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---------- CALENDRIER ---------- */
+.cal-wrap {
   display: grid;
   grid-template-columns: 1fr 320px;
-  grid-template-rows: auto;
-  gap: 0;
-  min-height: 100vh;
+  gap: 1.5rem;
+  background: var(--bg);
+  border-radius: 24px;
 }
 
-/* LEFT */
-.left-col { padding: 1.4rem 1.6rem 2rem; }
-
-/* RIGHT */
-.right-col {
-  background: var(--wh);
-  border-left: 1px solid var(--bd);
-  display: flex; flex-direction: column;
-  min-height: 100vh;
-  position: sticky; top: 0; height: 100vh;
-  overflow-y: auto;
+.cal-left {
+  padding: 0.4rem 0 0.8rem 0;
 }
-.right-col::-webkit-scrollbar { width: 3px; }
-.right-col::-webkit-scrollbar-thumb { background: var(--og25); border-radius: 3px; }
 
-/* ── TOPBAR ── */
 .topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1rem; gap: 12px; flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.tb-left { display: flex; align-items: center; gap: 10px; }
-.tb-icon {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: var(--or); display: flex; align-items: center;
-  justify-content: center; font-size: 16px;
-  box-shadow: 0 2px 6px rgba(255,140,0,0.28); flex-shrink: 0;
-}
-.tb-title { font-size: 0.92rem; font-weight: 700; color: var(--tx); }
-.tb-sub   { font-size: 0.62rem; color: var(--tx3); margin-top: 1px; }
 
-.month-nav { display: flex; align-items: center; gap: 6px; }
-.month-lbl { font-size: 0.82rem; font-weight: 700; color: var(--or); min-width: 120px; text-align: center; }
-.nbtn {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 1px solid var(--bd); background: var(--wh);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: border-color .2s, background .2s; flex-shrink: 0;
+.tb-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.nbtn:hover { border-color: var(--or); background: var(--og08); }
-.nbtn svg { width: 10px; height: 10px; stroke: var(--tx2); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+.tb-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--or);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.tb-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.tb-sub {
+  font-size: 0.62rem;
+  color: var(--text3);
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.month-lbl {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--or);
+  min-width: 120px;
+  text-align: center;
+}
+
+.nbtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 30px;
+  border: 1px solid var(--bd);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nbtn:hover {
+  border-color: var(--or);
+  background: var(--og08);
+}
 
 .today-btn {
-  background: var(--og08); border: 1px solid rgba(255,140,0,0.22);
-  border-radius: 6px; padding: 5px 12px;
-  font-family: var(--f); font-size: 0.70rem; font-weight: 600;
-  color: var(--or); cursor: pointer; transition: background .2s;
-  white-space: nowrap;
+  background: var(--og08);
+  border: 1px solid var(--og25);
+  border-radius: 30px;
+  padding: 5px 14px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--or);
+  cursor: pointer;
 }
-.today-btn:hover { background: var(--og15); }
 
-/* ── STATS ── */
-.stats { display: flex; gap: 8px; margin-bottom: 1rem; }
+.stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
 .sp {
-  flex: 1; background: var(--wh); border: 1px solid var(--bd);
-  border-radius: 9px; padding: 8px 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  flex: 1;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 8px 12px;
 }
-.sp.accent { background: var(--or); border-color: var(--or); box-shadow: 0 2px 10px rgba(255,140,0,0.25); }
-.sp-val { font-size: 1.1rem; font-weight: 700; color: var(--tx); }
-.sp.accent .sp-val { color: #fff; }
-.sp-lbl { font-size: 0.58rem; color: var(--tx3); margin-top: 1px; letter-spacing: 0.02em; }
-.sp.accent .sp-lbl { color: rgba(255,255,255,0.75); }
 
-/* ── DAY LABELS ── */
-.dlbls { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 4px; }
-.dlbl { text-align: center; font-size: 0.58rem; font-weight: 600; color: var(--tx3); letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 0; }
-.dlbl.we { color: var(--or); }
+.sp.accent {
+  background: var(--or);
+  color: white;
+}
 
-/* ── GRID ── */
+.sp-val {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sp-lbl {
+  font-size: 0.58rem;
+  letter-spacing: 0.03em;
+}
+
+.dlbls {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+
+.dlbl {
+  text-align: center;
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.dlbl.we {
+  color: var(--or);
+}
+
 .cal-grid {
-  display: grid; grid-template-columns: repeat(7,1fr);
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
 }
-.dc {
-  border-radius: 8px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  cursor: pointer; position: relative;
-  transition: background .15s, transform .12s;
-  border: 1.5px solid transparent;
-  padding: 5px 2px;
-  min-height: 38px;
-}
-.dc:hover:not(.other) { background: var(--og08); transform: scale(1.07); }
-.dc.other { opacity: 0.20; cursor: default; pointer-events: none; }
-.dc.today { background: var(--or); box-shadow: 0 3px 10px rgba(255,140,0,0.35); }
-.dc.today .dn { color: #fff; font-weight: 700; }
-.dc.selected:not(.today) { border-color: var(--or); background: var(--og08); }
-.dc.weekend:not(.today) .dn { color: var(--or); }
-.dn { font-size: 0.74rem; font-weight: 500; color: var(--tx); line-height: 1; }
 
-.dots { display: flex; gap: 2px; position: absolute; bottom: 3px; }
-.dot { width: 4px; height: 4px; border-radius: 50%; }
-.dot.high   { background: #e53030; }
-.dot.medium { background: var(--or); }
-.dot.low    { background: #0f7a3a; }
-.dot.info   { background: #1a6ec9; }
-.dc.today .dot { opacity: 0.85; }
+.dc {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid transparent;
+  padding: 6px 2px;
+  min-height: 48px;
+  transition: all 0.1s ease;
+}
+
+.dc:hover:not(.other) {
+  background: var(--og08);
+  transform: scale(1.03);
+}
+
+.dc.other {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+.dc.today {
+  background: var(--or);
+  box-shadow: 0 3px 10px var(--og25);
+}
+
+.dc.today .dn {
+  color: white;
+  font-weight: 700;
+}
+
+.dc.selected:not(.today) {
+  border-color: var(--or);
+  background: var(--og08);
+}
+
+.dn {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.dots {
+  display: flex;
+  gap: 2px;
+  margin-top: 3px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 10px;
+}
+
+.dot.high {
+  background: #e53030;
+}
+
+.dot.medium {
+  background: var(--or);
+}
+
+.dot.low {
+  background: #0f7a3a;
+}
 
 .nc-badge {
-  position: absolute; top: 3px; right: 3px;
-  font-size: 0.42rem; font-weight: 700;
-  background: var(--or); color: #fff;
-  min-width: 12px; height: 12px; border-radius: 6px; padding: 0 2px;
-  display: flex; align-items: center; justify-content: center;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 0.48rem;
+  font-weight: 700;
+  background: var(--or);
+  color: white;
+  border-radius: 20px;
+  padding: 1px 4px;
+  min-width: 14px;
+  text-align: center;
 }
-.dc.today .nc-badge { background: #fff; color: var(--or); }
 
-/* ── RIGHT PANEL ── */
+.cal-right {
+  background: var(--bg);
+  border-left: 1px solid var(--bd);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
 .panel-head {
-  background: linear-gradient(135deg, var(--or) 0%, var(--ord) 100%);
-  padding: 1rem 1.2rem; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--or), var(--ord));
+  padding: 1rem 1.2rem;
 }
-.ph-date  { font-size: 0.9rem; font-weight: 700; color: #fff; }
-.ph-count { font-size: 0.66rem; color: rgba(255,255,255,0.80); margin-top: 3px; }
 
-.add-form { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--bd); flex-shrink: 0; }
+.ph-date {
+  font-weight: 700;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.ph-count {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.add-form {
+  padding: 1rem;
+  border-bottom: 1px solid var(--bd);
+}
+
 .note-input {
-  width: 100%; border: 1.5px solid var(--bd); border-radius: 8px;
-  padding: 8px 11px; font-family: var(--f); font-size: 0.80rem; color: var(--tx);
-  background: var(--s1); outline: none; resize: none; min-height: 58px;
-  transition: border-color .2s, box-shadow .2s; margin-bottom: 7px;
+  width: 100%;
+  border: 1.5px solid var(--bd);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-family: var(--f-inter);
+  font-size: 0.8rem;
+  background: var(--s1);
+  resize: none;
+  outline: none;
 }
-.note-input:focus { border-color: var(--or); box-shadow: 0 0 0 3px rgba(255,140,0,0.09); }
-.note-input::placeholder { color: var(--tx3); }
 
-.form-row { display: flex; gap: 6px; }
+.note-input:focus {
+  border-color: var(--or);
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
 .prio-sel {
-  flex: 1; border: 1.5px solid var(--bd); border-radius: 7px;
-  padding: 7px 9px; font-family: var(--f); font-size: 0.72rem;
-  color: var(--tx); background: var(--s1); outline: none; cursor: pointer; appearance: none;
-  transition: border-color .2s;
+  flex: 1;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 8px;
+  background: var(--s1);
 }
-.prio-sel:focus { border-color: var(--or); }
-.add-btn {
-  background: var(--or); color: #fff; border: none; border-radius: 7px;
-  padding: 7px 16px; font-family: var(--f); font-size: 0.75rem; font-weight: 600;
-  cursor: pointer; transition: background .2s, transform .15s; white-space: nowrap;
-}
-.add-btn:hover { background: var(--ord); }
-.add-btn:active { transform: scale(0.97); }
 
-.note-list { flex: 1; padding: 0.8rem 1.1rem; overflow-y: auto; }
-.note-list::-webkit-scrollbar { width: 3px; }
-.note-list::-webkit-scrollbar-thumb { background: var(--og25); border-radius: 3px; }
+.add-btn {
+  background: var(--or);
+  border: none;
+  border-radius: 30px;
+  padding: 0 18px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.note-list {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 320px;
+}
 
 .note-item {
-  background: var(--s1); border: 1px solid var(--bd);
-  border-radius: 9px; padding: 9px 11px;
-  display: flex; gap: 9px; align-items: flex-start;
+  background: var(--s1);
   border-left: 3px solid var(--nc, var(--or));
-  margin-bottom: 7px; animation: slin .2s ease; transition: box-shadow .2s;
+  border-radius: 12px;
+  padding: 0.7rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  gap: 8px;
 }
-@keyframes slin { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
-.note-item:hover { box-shadow: 0 2px 7px rgba(0,0,0,0.07); }
-.pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--nc,var(--or)); flex-shrink: 0; margin-top: 5px; }
-.nbody { flex: 1; min-width: 0; }
-.ntext { font-size: 0.78rem; color: var(--tx); line-height: 1.5; word-break: break-word; }
-.nmeta { display: flex; align-items: center; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
-.ntime { font-size: 0.60rem; color: var(--tx3); }
-.ptag  { font-size: 0.56rem; font-weight: 600; padding: 2px 6px; border-radius: 20px; letter-spacing: 0.03em; }
+
+.p-high {
+  --nc: #e53030;
+}
+
+.p-medium {
+  --nc: #ff8c00;
+}
+
+.p-low {
+  --nc: #0f7a3a;
+}
+
+.ntext {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.nmeta {
+  display: flex;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.ptag {
+  font-size: 0.55rem;
+  font-weight: 600;
+  background: var(--og10);
+  padding: 2px 8px;
+  border-radius: 40px;
+}
+
 .del-btn {
-  background: transparent; border: none; cursor: pointer;
-  color: var(--tx3); font-size: 12px; padding: 2px 3px;
-  border-radius: 4px; transition: color .2s, background .2s; flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
 }
-.del-btn:hover { color: #c02020; background: rgba(200,0,0,0.07); }
 
-.empty-msg { text-align: center; padding: 2rem 1rem; color: var(--tx3); font-size: 0.75rem; }
-.empty-icon { font-size: 1.8rem; margin-bottom: 6px; }
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text3);
+}
 
-.p-high   { --nc:#e53030; } .p-medium { --nc:#ff8c00; }
-.p-low    { --nc:#0f7a3a; } .p-info   { --nc:#1a6ec9; }
-.tag-high   { background:rgba(229,48,48,0.10); color:#c02020; }
-.tag-medium { background:rgba(255,140,0,0.12); color:var(--ord); }
-.tag-low    { background:rgba(15,122,58,0.10); color:#0a6030; }
-.tag-info   { background:rgba(26,110,201,0.10); color:#155aaa; }
+.empty-msg {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text3);
+}
 
-/* ══════════════════════════════
-   MOBILE: single column
-══════════════════════════════ */
-@media (max-width: 700px) {
-  .page { grid-template-columns: 1fr; grid-template-rows: auto auto; }
-  .left-col { padding: 1rem 1rem 0.5rem; }
-  .right-col {
-    position: static; height: auto; min-height: unset;
-    border-left: none; border-top: 1px solid var(--bd);
+.empty-icon {
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 780px) {
+  .dashboard {
+    padding: 1rem;
   }
-  .dc { min-height: 44px; border-radius: 10px; }
-  .dn { font-size: 0.82rem; }
-  .nc-badge { font-size: 0.50rem; min-width: 13px; height: 13px; }
-  .dot { width: 5px; height: 5px; }
-  .stats { gap: 7px; }
-  .sp-val { font-size: 1.2rem; }
-  .sp-lbl { font-size: 0.62rem; }
-  .month-lbl { font-size: 0.88rem; }
+  .cal-wrap {
+    grid-template-columns: 1fr;
+  }
+  .cal-right {
+    border-left: none;
+    border-top: 1px solid var(--bd);
+  }
+  .apps-grid,
+  .docs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
+@media (max-width: 480px) {
+  .apps-grid,
+  .docs-grid {
+    grid-template-columns: 1fr;
+  }
+  .forecast {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div id="weatherContent"><div class="loading">⏳ Chargement météo...</div></div>
-</div>
-<!-- ── TITRE APPLICATIONS ── -->
-  <div class="sec-head">
-    <div class="sec-line"></div>
-    <span class="sec-label">Applications</span>
-    <div class="sec-rule"></div>
+<div class="dashboard">
+
+  <!-- SECTION 1 : MÉTÉO -->
+  <div class="section">
+    <div id="weatherContent"><div class="loading">⏳ Chargement météo...</div></div>
   </div>
 
-  <!-- APPS -->
-  <div class="apps-grid">
-    <a href="https://odoo.itanis.tn/web/login" target="_blank" class="app-card">
-      <div class="icon-wrap">
-        <div class="icon-box odoo">
-          <svg width="46" height="28" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="18" fill="none" stroke="#714B67" stroke-width="6"/>
-            <circle cx="30" cy="30" r="7" fill="#714B67"/>
-            <text x="56" y="38" font-family="Arial,sans-serif" font-weight="bold" font-size="32" fill="#714B67">odoo</text>
-          </svg>
+  <!-- SECTION 2 : APPLICATIONS -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-line"></div>
+      <span class="sec-label">Applications</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="apps-grid">
+      <a href="https://odoo.itanis.tn/web/login" target="_blank" class="app-card">
+        <div class="icon-wrap"><div class="icon-box odoo"><svg width="46" height="28" viewBox="0 0 200 60"><circle cx="30" cy="30" r="18" fill="none" stroke="#714B67" stroke-width="6"/><circle cx="30" cy="30" r="7" fill="#714B67"/><text x="56" y="38" font-family="Arial" font-weight="bold" font-size="32" fill="#714B67">odoo</text></svg></div></div>
+        <div class="app-name">ODOO</div>
+        <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+      </a>
+      <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Socit/Forms/AllItems.aspx" target="_blank" class="app-card">
+        <div class="icon-wrap"><div class="icon-box erp"><svg width="48" viewBox="0 0 96 96"><circle cx="38" cy="56" r="22" fill="#2684D6"/><circle cx="54" cy="40" r="22" fill="#0B53CE"/><text x="52" y="70" font-family="Segoe UI" font-weight="800" font-size="32" fill="white" text-anchor="middle">S</text></svg></div></div>
+        <div class="app-name">ERP</div>
+        <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+      </a>
+      <a href="https://www.itanis.tn/" target="_blank" class="app-card">
+        <div class="icon-wrap"><div class="icon-box web">🌐</div></div>
+        <div class="app-name">Site Web</div>
+        <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : ESPACES DOCUMENTAIRES (9 documents) -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-line"></div>
+      <span class="sec-label">Espaces Documentaires</span>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="docs-grid" id="docsGrid"></div>
+  </div>
+
+  <!-- SECTION 4 : CALENDRIER -->
+  <div class="section">
+    <div class="cal-wrap">
+      <div class="cal-left">
+        <div class="topbar">
+          <div class="tb-left"><div class="tb-icon">📅</div><div><div class="tb-title">Calendrier ITANIS</div><div class="tb-sub" id="todayStr"></div></div></div>
+          <div class="month-nav"><div class="nbtn" onclick="chMonth(-1)">◀</div><div class="month-lbl" id="monthLbl"></div><div class="nbtn" onclick="chMonth(1)">▶</div></div>
+          <button class="today-btn" onclick="goToday()">Aujourd'hui</button>
+        </div>
+        <div class="stats"><div class="sp accent"><div class="sp-val" id="stToday">0</div><div class="sp-lbl">Aujourd'hui</div></div><div class="sp"><div class="sp-val" id="stMonth">0</div><div class="sp-lbl">Ce mois</div></div><div class="sp"><div class="sp-val" id="stHigh">0</div><div class="sp-lbl">Haute priorité</div></div></div>
+        <div class="dlbls"><div class="dlbl">Lun</div><div class="dlbl">Mar</div><div class="dlbl">Mer</div><div class="dlbl">Jeu</div><div class="dlbl">Ven</div><div class="dlbl we">Sam</div><div class="dlbl we">Dim</div></div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="cal-right">
+        <div class="panel-head"><div class="ph-date" id="panelDate">📅 Sélectionnez un jour</div><div class="ph-count" id="panelCount">Cliquez sur une date</div></div>
+        <div class="add-form"><textarea class="note-input" id="noteInput" placeholder="✏️ Tâche ou note (Ctrl+Enter)" rows="2"></textarea><div class="form-row"><select class="prio-sel" id="prioSel"><option value="high">🔴 Haute</option><option value="medium" selected>🟠 Moyenne</option><option value="low">🟢 Basse</option><option value="info">🔵 Info</option></select><button class="add-btn" onclick="addNote()">+ Ajouter</button></div></div>
+        <div class="note-list" id="noteList">
+          <div class="empty-msg"><div class="empty-icon">📋</div>Sélectionnez un jour<br/>pour voir ou ajouter des tâches</div>
         </div>
       </div>
-      <div class="app-name">ODOO</div>
-      <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
-    </a>
-
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Socit/Forms/AllItems.aspx" target="_blank" class="app-card">
-      <div class="icon-wrap">
-        <div class="icon-box erp" style="padding:6px;">
-          <svg width="52" height="52" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="sp1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2684D6"/><stop offset="100%" stop-color="#0B53CE"/></linearGradient>
-              <linearGradient id="sp2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#40A9F3"/><stop offset="100%" stop-color="#1A78D4"/></linearGradient>
-              <linearGradient id="sp3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#69C6F8"/><stop offset="100%" stop-color="#3BA0EF"/></linearGradient>
-            </defs>
-            <circle cx="38" cy="56" r="22" fill="url(#sp1)"/>
-            <circle cx="54" cy="40" r="22" fill="url(#sp2)"/>
-            <circle cx="62" cy="62" r="18" fill="url(#sp3)"/>
-            <text x="52" y="70" font-family="Segoe UI,Arial" font-weight="800" font-size="32" fill="white" text-anchor="middle">S</text>
-          </svg>
-        </div>
-      </div>
-      <div class="app-name">ERP</div>
-      <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
-    </a>
-
-    <a href="https://www.itanis.tn/" target="_blank" class="app-card">
-      <div class="icon-wrap">
-        <div class="icon-box web" style="overflow:hidden;padding:0;">
-          <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABSAH4DASIAAhEBAxEB/8QAHAABAAMAAgMAAAAAAAAAAAAAAAIDBAEFBgcI/8QANhAAAQMDAQQHBgUFAAAAAAAAAQACAwQFEQYSEyExBzRBUWGSsSJTcoGC0RQVMlJxCBahsuH/xAAYAQEAAwEAAAAAAAAAAAAAAAAAAQIFA//EACERAQACAgEFAAMAAAAAAAAAAAABAgMRIQQSE0FhMXHR/9oADAMBAAIRAxEAPwD7LREQCouOEcVRK4khrf1OOAg5dL7Wy0Fzu4IBUHjsMH8u/wCK6KNsbdlvzPaVJBn2Kj9sfmP2TYqO6PzH7LQiDPsVHdH5j9k2aj9sfnP2WhEGcukZxfGcd7TlTY8OAIOQVas87d08SN4NccOHj3oLwVyq2OyrAgIiICFEPJBW84Cph41Q8Gk+itk5Kmm639B9Qg1oqKyrpaNsbqqeOESSNiZtnG09xwGjxKwt1HYnVoom3WlM7nbAZt83dy5Xz46TEWtETP10phyXjdazMfp2qLqLXqaw3S5y2233SnqayJpdJEwnaaAQCT8yF26vW9bxus7MmK+Ke28TE/eBFRX1UVFSSVM2dhmM48Tgf5KosdybdKM1LIXxN2y0Bx5gdv8ABUeSvd2b5RGO0079cNyrqhmmk8GkqxV1PVpfgPorqKoStDVkgPBamoJIiICFEKCmXkqabrf0H1Cul5Kmm639B9Qg8Y6TuNRpodn5xD/sFl6Trbb6S32yeloaaCU3OEF8cYa7HHhkLzOuoKWtkp5KiFsj6eTeRFwzsu7/AOVju1O2sq6KnqaE1MTKgPDzyic1jnNfjt4jHHtIWX1HQTl8v43bWvnEfxq9P18YvFHOq73929cdPt+GjtNx2bRNBBDrPVc34C2/hYWiUE8ZJz2kMaSc8cOLV610lrbWGk9Ba30dqOfUsFwjslXddN3G9MLaySNrCJI3Oy5u3G7Dhhx9lwPDGF72rrdan6y/uqp01W1F3t9PNTUtZu9vZhA2nbtpOAXEluQNo457JC0Xx9DqHTbKeutFXW2y7W95miMLmyCNzATG4Di1xDsYyDwWlERWNRDNtabzu07l8z6nv3TJo3+n1stbcp9QWa6WulrKO/NkLay2SPMchin57xhyWh3jg8wFbdajpL1NRai/JKrUFdbrbr2pgrqSz1zaSqFK2niEbIncmtDiSQOZdkgnJX0ReaC03XSx0jW6Xq6izy00MX4M0+zEIt41gbkfpLBh2BxAbkHguhr+jzRGobZNaa/SFzZR1VxbcalgkmhElTMzjK8seC4tGGkcQ3sCn3vSPWtvX3QZXstXStRWO/UHSZb7ncKOd9AzUF9FZTyCMZkOw3ADgORIPyK+j6nq0vwH0Xgehehzo90TfxfdO2BtNcGxuibO+olmc1ruYbvHu2c94XnlT1aX4D6KVWan5Ba28lkp+QWtvJBJERAQoh5IKpeSoput/QfUK+Tks7XCOpa48AeB+aDaiIgIiICIiAq6nq0vwH0ViorXBsBb2v8AZCCqDktTVmgC0tQSREQEREEHjgss7MgrYQq3tygzwVRYNibJA5O+60iogIzvmfM4WaSLPYqXQ+CDfv4PfR+YJv4PfR+YLrtx4JuPBB2O/g99H5gm/g99H5guu3HguRD4INslXC0ey7bPc1Zcvmk23/IDsXLIfBXxx4QSibhXBRaMKaAiIgIiICieSIgg5QKIgiiIgLkIiCTVY1EQSC5REBERB//Z" alt="ITANIS" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"/>
-        </div>
-      </div>
-      <div class="app-name">Site Web</div>
-      <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
-    </a>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- ── TITRE ESPACES DOCUMENTAIRES ── -->
-  <div class="sec-head">
-    <div class="sec-line"></div>
-    <span class="sec-label">Espaces Documentaires</span>
-    <div class="sec-rule"></div>
-  </div>
-
-  <!-- ESPACES -->
-  <div class="docs-grid">
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Projets&R%C3%A9alisations" target="_blank" class="doc-card" style="--lc:#ff8c00;">
-      <div class="doc-icon">🏗️</div>
-      <div class="doc-body"><div class="doc-name">Projets & Réalisations</div><div class="doc-sub">Études de cas, livrables</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Technique_" target="_blank" class="doc-card" style="--lc:#f5c842;">
-      <div class="doc-icon">🔧</div>
-      <div class="doc-body"><div class="doc-name">Technique</div><div class="doc-sub">Plans, spécifications</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Soci%C3%A9t%C3%A9" target="_blank" class="doc-card" style="--lc:#1a6ec9;">
-      <div class="doc-icon">🏢</div>
-      <div class="doc-body"><div class="doc-name">Documents de la Société</div><div class="doc-sub">Chartes, procédures</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Document_Juridique" target="_blank" class="doc-card" style="--lc:#a0309a;">
-      <div class="doc-icon">⚖️</div>
-      <div class="doc-body"><div class="doc-name">Document Juridique</div><div class="doc-sub">Contrats, conformité</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Administration%20%26%20Finance#" target="_blank" class="doc-card" style="--lc:#ff8c00;">
-      <div class="doc-icon">💰</div>
-      <div class="doc-body"><div class="doc-name">Administration & Finance</div><div class="doc-sub">Budgets, facturation</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Ressources_Humaines#" target="_blank" class="doc-card" style="--lc:#e53030;">
-      <div class="doc-icon">👥</div>
-      <div class="doc-body"><div class="doc-name">Ressources Humaines</div><div class="doc-sub">Paie, congés, avantages</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Commercial_#" target="_blank" class="doc-card" style="--lc:#0f7a3a;">
-      <div class="doc-icon">📊</div>
-      <div class="doc-body"><div class="doc-name">Commercial</div><div class="doc-sub">Clients, ventes, devis</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Communication%26Marketing#" target="_blank" class="doc-card" style="--lc:#007a6a;">
-      <div class="doc-icon">📣</div>
-      <div class="doc-body"><div class="doc-name">Communication & Marketing</div><div class="doc-sub">Visuels, réseaux, marque</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Archives%26Historique" target="_blank" class="doc-card" style="--lc:#888880;">
-      <div class="doc-icon">🗃️</div>
-      <div class="doc-body"><div class="doc-name">Archives et Historique</div><div class="doc-sub">Historique, dossiers clos</div></div>
-      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
-    </a>
-  </div>
-<!-- LEFT: CALENDAR -->
-  <div class="left-col">
-
-    <div class="topbar">
-      <div class="tb-left">
-        <div class="tb-icon">📅</div>
-        <div>
-          <div class="tb-title">Calendrier ITANIS</div>
-          <div class="tb-sub" id="todayStr"></div>
-        </div>
-      </div>
-      <div class="month-nav">
-        <div class="nbtn" onclick="chMonth(-1)"><svg viewBox="0 0 11 11"><path d="M7 1L3 5.5 7 10"/></svg></div>
-        <div class="month-lbl" id="monthLbl"></div>
-        <div class="nbtn" onclick="chMonth(1)"><svg viewBox="0 0 11 11"><path d="M4 1l4 4.5L4 10"/></svg></div>
-      </div>
-      <button class="today-btn" onclick="goToday()">Aujourd'hui</button>
-    </div>
-
-    <div class="stats">
-      <div class="sp accent"><div class="sp-val" id="stToday">0</div><div class="sp-lbl">Aujourd'hui</div></div>
-      <div class="sp"><div class="sp-val" id="stMonth">0</div><div class="sp-lbl">Ce mois</div></div>
-      <div class="sp"><div class="sp-val" id="stHigh">0</div><div class="sp-lbl">Priorité haute</div></div>
-    </div>
-
-    <div class="dlbls">
-      <div class="dlbl">Lun</div><div class="dlbl">Mar</div><div class="dlbl">Mer</div>
-      <div class="dlbl">Jeu</div><div class="dlbl">Ven</div>
-      <div class="dlbl we">Sam</div><div class="dlbl we">Dim</div>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-
-  </div>
-
-  <!-- RIGHT: PANEL -->
-  <div class="right-col">
-    <div class="panel-head">
-      <div class="ph-date" id="panelDate">Sélectionnez un jour</div>
-      <div class="ph-count" id="panelCount">Cliquez sur une date</div>
-    </div>
-    <div class="add-form">
-      <textarea class="note-input" id="noteInput" placeholder="✏️  Tâche ou note… (Ctrl+Enter)" rows="2"></textarea>
-      <div class="form-row">
-        <select class="prio-sel" id="prioSel">
-          <option value="high">🔴 Haute</option>
-          <option value="medium" selected>🟠 Moyenne</option>
-          <option value="low">🟢 Basse</option>
-          <option value="info">🔵 Info</option>
-        </select>
-        <button class="add-btn" onclick="addNote()">+ Ajouter</button>
-      </div>
-    </div>
-    <div class="note-list" id="noteList">
-      <div class="empty-msg"><div class="empty-icon">📋</div>Sélectionnez un jour<br/>pour voir ou ajouter des tâches</div>
     </div>
   </div>
 </div>
 
 <script>
+// ---------- MÉTÉO ----------
 const CITY = 'Tunis';
-const API_KEY = "bd09c37e2c7f4e15e1de8b7e42c2de21";
+const API_KEY = 'bd5e378503939ddaee76f12ad7a97608';
+const conditions = { 'Clear': { fr: 'Ciel dégagé', icon: '☀️' }, 'Clouds': { fr: 'Nuageux', icon: '⛅' }, 'Rain': { fr: 'Pluie', icon: '🌧️' }, 'Drizzle': { fr: 'Bruine', icon: '🌦️' }, 'Thunderstorm': { fr: 'Orage', icon: '⛈️' }, 'Snow': { fr: 'Neige', icon: '❄️' }, 'Mist': { fr: 'Brume', icon: '🌫️' }, 'Haze': { fr: 'Brume sèche', icon: '🌫️' }, 'Fog': { fr: 'Brouillard', icon: '🌫️' } };
+const daysW = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+const monthsY = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
 
-const conditions = {
-  'Clear': { fr: 'Ciel dégagé', icon: '☀️' },
-  'Clouds': { fr: 'Nuageux', icon: '⛅' },
-  'Rain': { fr: 'Pluie', icon: '🌧️' },
-  'Drizzle': { fr: 'Bruine', icon: '🌦️' },
-  'Thunderstorm': { fr: 'Orage', icon: '⛈️' },
-  'Snow': { fr: 'Neige', icon: '❄️' },
-  'Mist': { fr: 'Brume', icon: '🌫️' },
-  'Haze': { fr: 'Brume sèche', icon: '🌫️' },
-  'Fog': { fr: 'Brouillard', icon: '🌫️' },
-};
-
-
-
-function getCondition(main) {
-  return conditions[main] || { fr: main, icon: '🌤️' };
-}
-
-function formatTime(ts, offset) {
-  const d = new Date((ts + offset) * 1000);
-  return d.getUTCHours().toString().padStart(2,'0') + 'h' + d.getUTCMinutes().toString().padStart(2,'0');
-}
+function getCondition(main) { return conditions[main] || { fr: main, icon: '🌤️' }; }
 
 async function loadWeather() {
   const el = document.getElementById('weatherContent');
   try {
-    const [cur, fore] = await Promise.all([
-      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=fr`).then(r=>r.json()),
-      fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=metric&lang=fr`).then(r=>r.json())
-    ]);
-
+    const [cur, fore] = await Promise.all([fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=fr`).then(r => r.json()), fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=metric&lang=fr`).then(r => r.json())]);
     const cond = getCondition(cur.weather[0].main);
-    const now = new Date();
-    const dateStr = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
-    const timeStr = now.getHours().toString().padStart(2,'0') + 'h' + now.getMinutes().toString().padStart(2,'0');
-
-    // build 5-day forecast from daily averages
+    const nowD = new Date();
+    const dateStr = daysW[nowD.getDay()] + ' ' + nowD.getDate() + ' ' + monthsY[nowD.getMonth()];
+    const timeStr = nowD.getHours().toString().padStart(2, '0') + 'h' + nowD.getMinutes().toString().padStart(2, '0');
     const dailyMap = {};
-    fore.list.forEach(item => {
-      const d = new Date(item.dt * 1000);
-      const key = d.toDateString();
-      if (!dailyMap[key]) dailyMap[key] = { temps: [], icons: [], day: d };
-      dailyMap[key].temps.push(item.main.temp);
-      dailyMap[key].icons.push(item.weather[0].main);
-    });
+    fore.list.forEach(item => { const d = new Date(item.dt * 1000); const key = d.toDateString(); if (!dailyMap[key]) dailyMap[key] = { temps: [], icons: [], day: d }; dailyMap[key].temps.push(item.main.temp); dailyMap[key].icons.push(item.weather[0].main); });
     const dailyArr = Object.values(dailyMap).slice(0, 5);
+    el.innerHTML = `<div class="main-card"><div class="city-row"><span class="city-name">📍 ${cur.name}, ${cur.sys.country}</span><span class="city-time">${dateStr} · ${timeStr}</span></div><div class="temp-row"><div class="temp-big">${Math.round(cur.main.temp)}°</div><div><div class="temp-icon">${cond.icon}</div><div class="temp-feel">Ressenti ${Math.round(cur.main.feels_like)}°</div></div></div><div class="condition">${cond.fr}</div><div class="details-row"><div class="detail-item"><div class="det-label">Humidité</div><div class="det-val">${cur.main.humidity}%</div></div><div class="detail-item"><div class="det-label">Vent</div><div class="det-val">${Math.round(cur.wind.speed * 3.6)} km/h</div></div><div class="detail-item"><div class="det-label">Pression</div><div class="det-val">${cur.main.pressure} hPa</div></div></div></div><div class="sec">Prévisions 5 jours</div><div class="forecast">${dailyArr.map(d => { const hi = Math.round(Math.max(...d.temps)); const lo = Math.round(Math.min(...d.temps)); const ic = getCondition(d.icons[Math.floor(d.icons.length / 2)]).icon; const label = d.day.toDateString() === nowD.toDateString() ? "Auj." : daysW[d.day.getDay()]; return `<div class="fc-item"><div class="fc-day">${label}</div><div class="fc-icon">${ic}</div><div class="fc-hi">${hi}°</div><div class="fc-lo">${lo}°</div></div>`; }).join('')}</div>`;
+  } catch(e) { el.innerHTML = `<div class="error-msg" style="background: rgba(255,80,80,0.1); padding:1rem; border-radius:16px;">⚠️ Erreur météo</div>`; }
+}
+loadWeather(); setInterval(loadWeather, 10 * 60 * 1000);
 
-    // next 8 hours
-    el.innerHTML = `
-      <div class="main-card">
-        <div class="city-row">
-          <span class="city-name">📍 ${cur.name}, ${cur.sys.country}</span>
-          <span class="city-time">${dateStr} · ${timeStr}</span>
-        </div>
-        <div class="temp-row">
-          <div class="temp-big">${Math.round(cur.main.temp)}°</div>
-          <div>
-            <div class="temp-icon">${cond.icon}</div>
-            <div class="temp-feel">Ressenti ${Math.round(cur.main.feels_like)}°</div>
-          </div>
-        </div>
-        <div class="condition">${cond.fr}</div>
-        <div class="details-row">
-          <div class="detail-item"><div class="det-label">Humidité</div><div class="det-val">${cur.main.humidity}%</div></div>
-          <div class="detail-item"><div class="det-label">Vent</div><div class="det-val">${Math.round(cur.wind.speed * 3.6)} km/h</div></div>
-          <div class="detail-item"><div class="det-label">Pression</div><div class="det-val">${cur.main.pressure} hPa</div></div>
-        </div>
+// ---------- ESPACES DOCUMENTAIRES (9 documents complets) ----------
+const docs = [
+  { name: "Projets & Réalisations", sub: "Études de cas, livrables", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Projets&R%C3%A9alisations", icon: "🏗️", color: "#ff8c00" },
+  { name: "Technique", sub: "Plans, spécifications", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Technique_", icon: "🔧", color: "#f5c842" },
+  { name: "Documents de la Société", sub: "Chartes, procédures", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Soci%C3%A9t%C3%A9", icon: "🏢", color: "#1a6ec9" },
+  { name: "Document Juridique", sub: "Contrats, conformité", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Document_Juridique", icon: "⚖️", color: "#a0309a" },
+  { name: "Administration & Finance", sub: "Budgets, facturation", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Administration%20%26%20Finance#", icon: "💰", color: "#ff8c00" },
+  { name: "Ressources Humaines", sub: "Paie, congés, avantages", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Ressources_Humaines#", icon: "👥", color: "#e53030" },
+  { name: "Commercial", sub: "Clients, ventes, devis", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Commercial_#", icon: "📊", color: "#0f7a3a" },
+  { name: "Communication & Marketing", sub: "Visuels, réseaux, marque", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Communication%26Marketing#", icon: "📣", color: "#007a6a" },
+  { name: "Archives et Historique", sub: "Historique, dossiers clos", url: "https://itanis.sharepoint.com/sites/ITANIS-cloud/Archives%26Historique", icon: "🗃️", color: "#888880" }
+];
+
+function buildDocs() { 
+  const grid = document.getElementById('docsGrid'); 
+  grid.innerHTML = docs.map(d => `
+    <a href="${d.url}" target="_blank" class="doc-card" style="--lc:${d.color};">
+      <div class="doc-icon">${d.icon}</div>
+      <div class="doc-body">
+        <div class="doc-name">${d.name}</div>
+        <div class="doc-sub">${d.sub}</div>
       </div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+  `).join(''); 
+}
+buildDocs();
 
-      <div class="sec">Prévisions 5 jours</div>
-      <div class="forecast">
-        ${dailyArr.map(d => {
-          const hi = Math.round(Math.max(...d.temps));
-          const lo = Math.round(Math.min(...d.temps));
-          const ic = getCondition(d.icons[Math.floor(d.icons.length/2)]).icon;
-          const label = d.day.toDateString() === now.toDateString() ? "Auj." : days[d.day.getDay()];
-          return `<div class="fc-item"><div class="fc-day">${label}</div><div class="fc-icon">${ic}</div><div class="fc-hi">${hi}°</div><div class="fc-lo">${lo}°</div></div>`;
-        }).join('')}
-      </div>
+// ---------- CALENDRIER ----------
+const STORAGE_KEY = 'itanis_cal_notes';
+let curDate = new Date();
+let selDateObj = null;
 
-    `;
-  } catch(e) {
-    el.innerHTML = `<div class="error-msg">⚠️ Impossible de charger la météo. Vérifiez votre connexion.</div>`;
-  }
+function getNotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; } }
+function saveNotes(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+function dateKeyYMD(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+function updateStats() { 
+  const data = getNotes(); 
+  const today = new Date(); 
+  const todayKey = dateKeyYMD(today.getFullYear(), today.getMonth(), today.getDate()); 
+  document.getElementById('stToday').textContent = (data[todayKey] || []).length; 
+  let total=0, high=0; 
+  const y=curDate.getFullYear(), m=curDate.getMonth(); 
+  Object.keys(data).forEach(k=>{ 
+    const [ky,km]=k.split('-').map(Number); 
+    if(ky===y && km===m+1){ 
+      total+=(data[k]||[]).length; 
+      (data[k]||[]).forEach(n=>{if(n.priority==='high')high++;}); 
+    } 
+  }); 
+  document.getElementById('stMonth').textContent=total; 
+  document.getElementById('stHigh').textContent=high; 
 }
 
-loadWeather();
-setInterval(loadWeather, 10 * 60 * 1000);
-
-const SK = 'itanis_cal_notes';
-const months  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const daysFr  = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const prioLbl = { high:'Haute', medium:'Moyenne', low:'Basse', info:'Info' };
-
-let now = new Date();
-let cur = new Date(now.getFullYear(), now.getMonth(), 1);
-let selDate = null;
-
-function getNotes() { try { return JSON.parse(localStorage.getItem(SK)||'{}'); } catch(e){return{};} }
-function saveNotes(d) { try { localStorage.setItem(SK, JSON.stringify(d)); } catch(e){} }
-function dateKey(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
-function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function updateStats() {
-  const data=getNotes();
-  document.getElementById('stToday').textContent=(data[dateKey(now.getFullYear(),now.getMonth(),now.getDate())]||[]).length;
-  const y=cur.getFullYear(),m=cur.getMonth(); let tot=0,hi=0;
-  Object.keys(data).forEach(k=>{
-    const [ky,km]=k.split('-').map(Number);
-    if(ky===y&&km===m+1){ tot+=(data[k]||[]).length; (data[k]||[]).forEach(n=>{if(n.priority==='high')hi++;}); }
-  });
-  document.getElementById('stMonth').textContent=tot;
-  document.getElementById('stHigh').textContent=hi;
+function renderCalendar() { 
+  const y=curDate.getFullYear(), m=curDate.getMonth(); 
+  document.getElementById('monthLbl').innerHTML = monthsY[m] + ' ' + y; 
+  const firstDay = new Date(y,m,1); 
+  let startOffset = firstDay.getDay()===0 ? 6 : firstDay.getDay()-1; 
+  const lastDate = new Date(y,m+1,0).getDate(); 
+  const prevMonthLast = new Date(y,m,0).getDate(); 
+  const data = getNotes(); 
+  const todayNow = new Date(); 
+  const grid = document.getElementById('calGrid'); 
+  grid.innerHTML=''; 
+  
+  for(let i=startOffset-1; i>=0; i--){ 
+    const cell = document.createElement('div'); 
+    cell.className='dc other'; 
+    cell.innerHTML=`<span class="dn">${prevMonthLast-i}</span>`; 
+    grid.appendChild(cell); 
+  } 
+  
+  for(let d=1; d<=lastDate; d++){ 
+    const isToday = (d===todayNow.getDate() && m===todayNow.getMonth() && y===todayNow.getFullYear()); 
+    const key = dateKeyYMD(y,m,d); 
+    const notes = data[key] || []; 
+    const dow = new Date(y,m,d).getDay(); 
+    const isWeekend = (dow===0||dow===6); 
+    const isSelected = selDateObj && selDateObj.y===y && selDateObj.m===m && selDateObj.d===d; 
+    let cls='dc'; 
+    if(isToday) cls+=' today'; 
+    if(isSelected && !isToday) cls+=' selected'; 
+    if(isWeekend) cls+=' weekend'; 
+    const cell = document.createElement('div'); 
+    cell.className=cls; 
+    let priorityDots=''; 
+    const prioSet = new Set(); 
+    notes.forEach(n=>prioSet.add(n.priority)); 
+    if(prioSet.size) priorityDots = `<div class="dots">${Array.from(prioSet).map(p=>`<div class="dot ${p}"></div>`).join('')}</div>`; 
+    const badge = notes.length ? `<div class="nc-badge">${notes.length}</div>` : ''; 
+    cell.innerHTML = `<span class="dn">${d}</span>${badge}${priorityDots}`; 
+    cell.addEventListener('click', (function(day){return function(){ selectDate(y,m,day); }; })(d)); 
+    grid.appendChild(cell); 
+  } 
+  
+  let totalCells = startOffset + lastDate; 
+  let remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7); 
+  for(let i=1; i<=remaining; i++){ 
+    const cell = document.createElement('div'); 
+    cell.className='dc other'; 
+    cell.innerHTML=`<span class="dn">${i}</span>`; 
+    grid.appendChild(cell); 
+  } 
+  updateStats(); 
+  if(selDateObj) renderNotes(); 
 }
 
-function render() {
-  const y=cur.getFullYear(),m=cur.getMonth();
-  document.getElementById('monthLbl').textContent=months[m]+' '+y;
-  const d0=new Date();
-  document.getElementById('todayStr').textContent=daysFr[(d0.getDay()+6)%7]+' '+d0.getDate()+' '+months[d0.getMonth()]+' '+d0.getFullYear();
-  const grid=document.getElementById('calGrid'); grid.innerHTML='';
-  const data=getNotes();
-  const first=new Date(y,m,1),last=new Date(y,m+1,0);
-  let sd=first.getDay(); sd=sd===0?6:sd-1;
-  const pl=new Date(y,m,0).getDate();
-  for(let i=sd-1;i>=0;i--){const c=document.createElement('div');c.className='dc other';c.innerHTML=`<span class="dn">${pl-i}</span>`;grid.appendChild(c);}
-  for(let d=1;d<=last.getDate();d++){
-    const c=document.createElement('div');
-    const isT=d===d0.getDate()&&m===d0.getMonth()&&y===d0.getFullYear();
-    const key=dateKey(y,m,d),notes=data[key]||[];
-    const dow=new Date(y,m,d).getDay(),isWe=dow===0||dow===6;
-    const isSel=selDate&&selDate.y===y&&selDate.m===m&&selDate.d===d;
-    let cls='dc'; if(isT)cls+=' today'; if(isSel&&!isT)cls+=' selected'; if(isWe)cls+=' weekend';
-    c.className=cls;
-    const dm={}; notes.forEach(n=>{dm[n.priority]=true;});
-    const dh=Object.keys(dm).map(p=>`<div class="dot ${p}"></div>`).join('');
-    let inner=`<span class="dn">${d}</span>`;
-    if(notes.length){inner+=`<div class="nc-badge">${notes.length}</div><div class="dots">${dh}</div>`;}
-    c.innerHTML=inner; c.addEventListener('click',()=>selectDay(y,m,d)); grid.appendChild(c);
-  }
-  const tot=sd+last.getDate(),rem=tot%7===0?0:7-(tot%7);
-  for(let d=1;d<=rem;d++){const c=document.createElement('div');c.className='dc other';c.innerHTML=`<span class="dn">${d}</span>`;grid.appendChild(c);}
-  updateStats(); if(selDate)renderNotes();
+function selectDate(y,m,d){ 
+  selDateObj = {y,m,d}; 
+  const dateObj = new Date(y,m,d); 
+  document.getElementById('panelDate').innerHTML = `📅 ${daysW[dateObj.getDay()]} ${d} ${monthsY[m]} ${y}`; 
+  updatePanelCount(); 
+  renderCalendar(); 
+  document.getElementById('noteInput').focus(); 
 }
 
-function selectDay(y,m,d){
-  selDate={y,m,d};
-  document.getElementById('panelDate').textContent=daysFr[(new Date(y,m,d).getDay()+6)%7]+' '+d+' '+months[m]+' '+y;
-  updateCount(); document.getElementById('noteInput').focus(); render();
-  // scroll to panel on mobile
-  if(window.innerWidth<=700) document.querySelector('.right-col').scrollIntoView({behavior:'smooth'});
+function updatePanelCount(){ 
+  if(!selDateObj) return; 
+  const notes = getNotes()[dateKeyYMD(selDateObj.y,selDateObj.m,selDateObj.d)]||[]; 
+  document.getElementById('panelCount').innerHTML = notes.length ? `${notes.length} tâche${notes.length>1?'s':''}` : 'Aucune tâche'; 
 }
-function updateCount(){
-  if(!selDate)return;
-  const n=(getNotes()[dateKey(selDate.y,selDate.m,selDate.d)]||[]).length;
-  document.getElementById('panelCount').textContent=n?`${n} tâche${n>1?'s':''}`:' Aucune tâche';
-}
-function renderNotes(){
-  if(!selDate)return;
-  const notes=(getNotes()[dateKey(selDate.y,selDate.m,selDate.d)]||[]);
-  const list=document.getElementById('noteList');
-  if(!notes.length){list.innerHTML=`<div class="empty-msg"><div class="empty-icon">✏️</div>Aucune tâche.<br/><span style="color:var(--or);">Ajoutez-en une !</span></div>`;return;}
-  list.innerHTML=notes.map((n,i)=>`
+
+function renderNotes(){ 
+  if(!selDateObj) return; 
+  const notes = getNotes()[dateKeyYMD(selDateObj.y,selDateObj.m,selDateObj.d)]||[]; 
+  const listDiv = document.getElementById('noteList'); 
+  if(!notes.length){ 
+    listDiv.innerHTML = `<div class="empty-msg"><div class="empty-icon">📋</div>Sélectionnez un jour<br/>pour voir ou ajouter des tâches</div>`; 
+    return; 
+  } 
+  listDiv.innerHTML = notes.map((n,i)=>`
     <div class="note-item p-${n.priority}">
-      <div class="pdot"></div>
       <div class="nbody">
-        <div class="ntext">${escHtml(n.text)}</div>
+        <div class="ntext">${escapeHtml(n.text)}</div>
         <div class="nmeta">
-          <span class="ntime">⏰ ${n.time}</span>
-          <span class="ptag tag-${n.priority}">${prioLbl[n.priority]}</span>
+          <span class="ptag">${n.priority==='high'?'🔴 Haute':n.priority==='medium'?'🟠 Moyenne':n.priority==='low'?'🟢 Basse':'🔵 Info'}</span>
         </div>
       </div>
-      <button class="del-btn" onclick="delNote(${i})">✕</button>
-    </div>`).join('');
+      <button class="del-btn" onclick="deleteNote(${i})">✕</button>
+    </div>
+  `).join(''); 
 }
-function addNote(){
-  if(!selDate){alert('Sélectionnez un jour.');return;}
-  const txt=document.getElementById('noteInput').value.trim();
-  if(!txt){document.getElementById('noteInput').focus();return;}
-  const prio=document.getElementById('prioSel').value,key=dateKey(selDate.y,selDate.m,selDate.d);
-  const data=getNotes(); if(!data[key])data[key]=[];
-  const t=new Date();
-  data[key].push({text:txt,priority:prio,time:t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0')});
-  saveNotes(data); document.getElementById('noteInput').value=''; updateCount(); render();
-}
-function delNote(idx){
-  if(!selDate)return;
-  const key=dateKey(selDate.y,selDate.m,selDate.d),data=getNotes();
-  if(!data[key])return; data[key].splice(idx,1); if(!data[key].length)delete data[key];
-  saveNotes(data); updateCount(); render();
-}
-function chMonth(dir){cur.setMonth(cur.getMonth()+dir);selDate=null;document.getElementById('panelDate').textContent='Sélectionnez un jour';document.getElementById('panelCount').textContent='Cliquez sur une date';document.getElementById('noteList').innerHTML=`<div class="empty-msg"><div class="empty-icon">📋</div>Sélectionnez un jour</div>`;render();}
-function goToday(){cur=new Date(now.getFullYear(),now.getMonth(),1);selectDay(now.getFullYear(),now.getMonth(),now.getDate());}
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')addNote();});
-render();
 
+window.deleteNote = function(idx){ 
+  if(!selDateObj) return; 
+  const key = dateKeyYMD(selDateObj.y,selDateObj.m,selDateObj.d); 
+  let data = getNotes(); 
+  if(!data[key]) return; 
+  data[key].splice(idx,1); 
+  if(data[key].length===0) delete data[key]; 
+  saveNotes(data); 
+  updatePanelCount(); 
+  renderCalendar(); 
+};
+
+window.addNote = function(){ 
+  if(!selDateObj){ 
+    alert("📅 Sélectionnez une date dans le calendrier"); 
+    return; 
+  } 
+  const txt = document.getElementById('noteInput').value.trim(); 
+  if(!txt){ 
+    document.getElementById('noteInput').focus(); 
+    return; 
+  } 
+  const priority = document.getElementById('prioSel').value; 
+  const key = dateKeyYMD(selDateObj.y,selDateObj.m,selDateObj.d); 
+  const data = getNotes(); 
+  if(!data[key]) data[key]=[]; 
+  const nowH = new Date(); 
+  data[key].push({ text: txt, priority: priority, time: nowH.getHours()+':'+nowH.getMinutes() }); 
+  saveNotes(data); 
+  document.getElementById('noteInput').value=''; 
+  updatePanelCount(); 
+  renderCalendar(); 
+};
+
+window.chMonth = function(dir){ 
+  curDate.setMonth(curDate.getMonth()+dir); 
+  selDateObj=null; 
+  document.getElementById('panelDate').innerHTML = '📅 Sélectionnez un jour'; 
+  document.getElementById('panelCount').innerHTML = 'Cliquez sur une date'; 
+  document.getElementById('noteList').innerHTML = `<div class="empty-msg"><div class="empty-icon">📋</div>Sélectionnez un jour<br/>pour voir ou ajouter des tâches</div>`;
+  renderCalendar(); 
+};
+
+window.goToday = function(){ 
+  const today = new Date(); 
+  curDate = new Date(today.getFullYear(), today.getMonth(), 1); 
+  selectDate(today.getFullYear(), today.getMonth(), today.getDate()); 
+};
+
+document.addEventListener('keydown', e=>{ if((e.ctrlKey||e.metaKey) && e.key === 'Enter') addNote(); });
+renderCalendar();
+selectDate(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 </script>
 </body>
 </html>
